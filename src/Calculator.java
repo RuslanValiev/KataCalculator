@@ -4,77 +4,148 @@ import java.util.Scanner;
 
 public class Calculator {
 
-    int first;
-    int second;
-    char operation;
+    private int firstOperand;
+    private int secondOperand;
+    private char operation;
+    private int result;
+    String expression;
 
-    public void start(){
-        checkExpression();
-        System.out.println(calculate(first, second, operation));
+    public void start() {
+        try {
+            checkExpression();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        calculate(firstOperand, secondOperand, operation);
+        System.out.println(result);
     }
 
-    public int calculate(int first, int second, char operation) {
+    public void calculate(int firstOperand, int secondOperand, char operation) {
 
-        int result = 0;
         switch (operation) {
             case '+':
-                result = first + second;
+                result = firstOperand + secondOperand;
                 break;
             case '-':
-                result = first - second;
+                result = firstOperand - secondOperand;
                 break;
             case '*':
-                result = first * second;
+                result = firstOperand * secondOperand;
                 break;
             case '/':
-                result = first / second;
+                result = firstOperand / secondOperand;
                 break;
         }
-        return result;
     }
 
 
-    public void checkExpression() {
-// считали введенную строку м присволили ее значение expr
+    public void checkExpression() throws Exception {
+// считали введенную строку м присволили ее значение expression
         Scanner scanner = new Scanner(System.in);
-        String expr = scanner.nextLine();
-        expr = expr.replaceAll(" ", "");
+        expression = scanner.nextLine();
+        expression = expression.replace(" ", "");
+        String[] s = null;
 
-//        строку превратили в массив char-ов
-        char[] arr = expr.toCharArray();
 
-//        узнали длину массива
-        int lengthArr = arr.length;
+        if (expression.contains("+") && !(expression.contains("-") || expression.contains("*") || expression.contains("/"))) {
+//            подсчитали количество символа "+"
+            int count = 0;
+            for (int i = 0; i < expression.length(); i++) {
+                if (expression.substring(i).equals("+")) {
+                    count++;
+                }
+            }
+//            и если количество символа "+" равно 1
+            if (count == 1) {
+                //        создали массив на основе введеного выражения разделив его по знаку операции
+                s = expression.split("\\+");
+                //        узнали индекс в выражении знака операции
+                int indexOfOperation = expression.indexOf("+");
+                //        вывели в консоль номер или индекс знака операции
+                System.out.println(indexOfOperation);
+                //        присвоили и вывели в консоль знак операции
+                operation = expression.charAt(indexOfOperation);
+                System.out.println(operation);
+                //        вывели в консоль массив строк с нашими операндами
+                System.out.println(Arrays.toString(s));
+            } else
+                throw new Exception(" формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
 
-//        вывели в консоль сам массив
-        System.out.println(arr);
+        } else if (expression.contains("-") && !(expression.contains("+") || expression.contains("*") || expression.contains("/"))) {
+            //            подсчитали количество символа "-"
+            int count = 0;
+            for (int i = 0; i < expression.length(); i++) {
+                if (expression.substring(i).equals("-")) {
+                    count++;
+                }
+            }
+//            и если количество символа "-" равно 1
+            if (count == 1) {
+                //        создали массив на основе введеного выражения разделив его по знаку операции
+                s = expression.split("-");
+                //        узнали индекс в выражении знака операции
+                int indexOfOperation = expression.indexOf("-");
+                //        вывели в консоль номер или индекс знака операции
+                System.out.println(indexOfOperation);
+                //        присвоили и вывели в консоль знак операции
+                operation = expression.charAt(indexOfOperation);
+                System.out.println(operation);
+                //        вывеоли в консоль массив строк с нашими операндами
+                System.out.println(Arrays.toString(s));
+            } else
+                throw new Exception(" формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
 
-//        вывели в консоль длину массива
-        System.out.println(lengthArr);
+        } else if (expression.contains("*") && !(expression.contains("-") || expression.contains("+") || expression.contains("/"))) {
+            //            подсчитали количество символа "*"
+            int count = 0;
+            for (int i = 0; i < expression.length(); i++) {
+                if (expression.substring(i).equals("*")) {
+                    count++;
+                }
+            }
+//            и если количество символа "*" равно 1
+            if (count == 1) {
+                //        создали массив на основе введеного выражения разделив его по знаку операции
+                s = expression.split("\\*");
+                //        узнали индекс в выражении знака операции
+                int indexOfOperation = expression.indexOf("*");
+                //        вывели в консоль номер или индекс знака операции
+                System.out.println(indexOfOperation);
+                //        присвоили и вывели в консоль знак операции
+                operation = expression.charAt(indexOfOperation);
+                System.out.println(operation);
+                //        вывеоли в консоль массив строк с нашими операндами
+                System.out.println(Arrays.toString(s));
+            } else
+                throw new Exception(" формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
 
-//        создали массив на основе введеного выражения разделив его по знаку операции
-        String[] s = expr.split("[\\+\\-\\*\\/]");
 
-//        вывеоли в консоль массив строк с нашими операндами
-        System.out.println(Arrays.toString(s));
+        } else if (expression.contains("/") && !(expression.contains("-") || expression.contains("+") || expression.contains("*"))) {
+            //            подсчитали количество символа "/"
+            int count = 0;
+            for (int i = 0; i < expression.length(); i++) {
+                if (expression.substring(i).equals("*")) {
+                    count++;
+                }
+            }
+//            и если количество символа "/" равно 1
+            if (count == 1) {
+                //        создали массив на основе введеного выражения разделив его по знаку операции
+                s = expression.split("/");
+                //        узнали индекс в выражении знака операции
+                int indexOfOperation = expression.indexOf("/");
+                //        вывели в консоль номер или индекс знака операции
+                System.out.println(indexOfOperation);
+                //        присвоили и вывели в консоль знак операции
+                operation = expression.charAt(indexOfOperation);
+                System.out.println(operation);
+                //        вывеоли в консоль массив строк с нашими операндами
+                System.out.println(Arrays.toString(s));
+            }else throw new Exception(" формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+        }
 
-//        узнали индекс в выражении знака операции
-        int indexOfOperation = expr.indexOf("+");
-
-//        вывели в консоль номер или индекс знака операции
-        System.out.println(indexOfOperation);
-
-//        присвоили и вывели в консоль знак операции
-        operation = expr.charAt(indexOfOperation);
-        System.out.println(operation);
-
-//       назначили и вывели в консоль операнды
-        first = Integer.parseInt(s[0]);
-        second = Integer.parseInt(s[1]);
-        System.out.println(first);
-        System.out.println(second);
+        firstOperand = Integer.parseInt(s[0]);
+        secondOperand = Integer.parseInt(s[1]);
 
     }
-
-
 }
