@@ -1,9 +1,9 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Calculator {
+class Calculator {
 
-    String[] roman = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
+    private String[] roman = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
             "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX",
             "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX",
             "XXX", "XXXI", "XXXII", "XXXIII", "XXXIV", "XXXV", "XXXVI", "XXXVII", "XXXVIII", "XXXIX",
@@ -16,12 +16,11 @@ public class Calculator {
 
     private int firstOperand;
     private int secondOperand;
-    private int result;
-
     private char operation;
     private String[] arrayOfOperands = null;
+    private boolean operandsIsRoman;
 
-    void start() {
+    void start() throws Exception {
         try {
             operationFormat();
         } catch (Exception e) {
@@ -29,27 +28,7 @@ public class Calculator {
         }
         convertToOperands(arrayOfOperands);
         calculate(firstOperand, secondOperand, operation);
-        System.out.println(result);
     }
-
-    private void calculate(int firstOperand, int secondOperand, char operation) {
-
-        switch (operation) {
-            case '+':
-                result = firstOperand + secondOperand;
-                break;
-            case '-':
-                result = firstOperand - secondOperand;
-                break;
-            case '*':
-                result = firstOperand * secondOperand;
-                break;
-            case '/':
-                result = firstOperand / secondOperand;
-                break;
-        }
-    }
-
 
     private void operationFormat() throws Exception {
 // считали введенную строку м присволили ее значение expression
@@ -122,7 +101,7 @@ public class Calculator {
             //            подсчитали количество символа "/"
             int count = 0;
             for (int i = 0; i < expression.length(); i++) {
-                if (Character.toString(expression.charAt(i)).equals("*")) {
+                if (Character.toString(expression.charAt(i)).equals("/")) {
                     count++;
                 }
             }
@@ -144,14 +123,10 @@ public class Calculator {
     }
 
     private void convertToOperands(String[] array) {
-
         boolean romanFirst = false;
         boolean romanSecond = false;
-
         String first = array[0];
         String second = array[1];
-
-
         for (int i = 0; i < roman.length; i++) {
             if (first.equals(roman[i])) {
                 romanFirst = true;
@@ -162,20 +137,51 @@ public class Calculator {
                 secondOperand = i + 1;
             }
         }
-        if (romanFirst == false && romanSecond == false) {
+        if (romanFirst && romanSecond) {
+            operandsIsRoman = true;
+        }
+        if (!romanFirst && !romanSecond) {
             try {
                 firstOperand = Integer.parseInt(first);
                 secondOperand = Integer.parseInt(second);
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             }
-        } else if (romanFirst == false || romanSecond == false) {
+        } else if (!romanFirst || !romanSecond) {
             try {
                 throw new Exception("Один из операндов не соответствует римским цифрам");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+    }
 
+    private void calculate(int firstOperand, int secondOperand, char operation) throws Exception {
+
+        int result = 0;
+        if (operandsIsRoman) {
+            if (firstOperand <= 10 && firstOperand <= 1 && secondOperand >= 1 && secondOperand <= 10) {
+                switch (operation) {
+                    case '+':
+                        result = firstOperand + secondOperand;
+                        break;
+                    case '-':
+                        result = firstOperand - secondOperand;
+                        break;
+                    case '*':
+                        result = firstOperand * secondOperand;
+                        break;
+                    case '/':
+                        result = firstOperand / secondOperand;
+                        break;
+                }
+            }
+            if (result > 0) {
+                System.out.println(roman[result - 1]);
+            }
+            else {
+                throw new Exception("в римской системе нет отрицательных чисел");
+            }
+        }
     }
 }
