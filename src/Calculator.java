@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 class Calculator {
-
+//    Это массив римских чисел до ста (100)
     private String[] roman = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
             "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX",
             "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX",
@@ -13,12 +13,17 @@ class Calculator {
             "LXX", "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII", "LXXVIII", "LXXIX",
             "LXXX", "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX",
             "XC", "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"};
-
+// первый операнд
     private int firstOperand;
+//    второй операнд
     private int secondOperand;
+//    символ оператора
     private char operation;
+//    операнды в массиве
     private String[] arrayOfOperands = null;
+//    переменная boolean говорит операнды римские да или нет
     private boolean operandsIsRoman;
+
 
     void start() throws Exception {
         try {
@@ -27,7 +32,12 @@ class Calculator {
             e.printStackTrace();
         }
         convertToOperands(arrayOfOperands);
-        calculate(firstOperand, secondOperand, operation);
+
+        if (firstOperand <= 10 && firstOperand >= 1 && secondOperand >= 1 && secondOperand <= 10) {
+            calculate(firstOperand, secondOperand, operation);
+        } else {
+            throw new Exception("Калькулятор принимает числа от 1 до 10");
+        }
     }
 
     private void operationFormat() throws Exception {
@@ -35,6 +45,8 @@ class Calculator {
         Scanner scanner = new Scanner(System.in);
         String expression = scanner.nextLine();
         expression = expression.replace(" ", "");
+
+        expression.matches("[+\\-*/]");
 
         if (expression.contains("+") && !(expression.contains("-") || expression.contains("*") || expression.contains("/"))) {
 //            подсчитали количество символа "+"
@@ -116,13 +128,10 @@ class Calculator {
             } else
                 throw new Exception(" формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
         }
-
-//        firstOperand = Integer.parseInt(arrayOfOperands[0]);
-//        secondOperand = Integer.parseInt(arrayOfOperands[1]);
-
     }
-
+// преобразовываем в операнды данные из строки
     private void convertToOperands(String[] array) {
+
         boolean romanFirst = false;
         boolean romanSecond = false;
         String first = array[0];
@@ -160,28 +169,41 @@ class Calculator {
 
         int result = 0;
         if (operandsIsRoman) {
-            if (firstOperand <= 10 && firstOperand <= 1 && secondOperand >= 1 && secondOperand <= 10) {
-                switch (operation) {
-                    case '+':
-                        result = firstOperand + secondOperand;
-                        break;
-                    case '-':
-                        result = firstOperand - secondOperand;
-                        break;
-                    case '*':
-                        result = firstOperand * secondOperand;
-                        break;
-                    case '/':
-                        result = firstOperand / secondOperand;
-                        break;
-                }
+            switch (operation) {
+                case '+':
+                    result = firstOperand + secondOperand;
+                    break;
+                case '-':
+                    result = firstOperand - secondOperand;
+                    break;
+                case '*':
+                    result = firstOperand * secondOperand;
+                    break;
+                case '/':
+                    result = firstOperand / secondOperand;
+                    break;
             }
             if (result > 0) {
                 System.out.println(roman[result - 1]);
-            }
-            else {
+            } else {
                 throw new Exception("в римской системе нет отрицательных чисел");
             }
+        } else {
+            switch (operation) {
+                case '+':
+                    result = firstOperand + secondOperand;
+                    break;
+                case '-':
+                    result = firstOperand - secondOperand;
+                    break;
+                case '*':
+                    result = firstOperand * secondOperand;
+                    break;
+                case '/':
+                    result = firstOperand / secondOperand;
+                    break;
+            }
+            System.out.println(result);
         }
     }
 }
