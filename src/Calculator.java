@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 class Calculator {
-//    Это массив римских чисел до ста (100)
+    //    Это массив римских чисел до ста (100)
     private String[] roman = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X",
             "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII", "XVIII", "XIX",
             "XX", "XXI", "XXII", "XXIII", "XXIV", "XXV", "XXVI", "XXVII", "XXVIII", "XXIX",
@@ -13,15 +13,15 @@ class Calculator {
             "LXX", "LXXI", "LXXII", "LXXIII", "LXXIV", "LXXV", "LXXVI", "LXXVII", "LXXVIII", "LXXIX",
             "LXXX", "LXXXI", "LXXXII", "LXXXIII", "LXXXIV", "LXXXV", "LXXXVI", "LXXXVII", "LXXXVIII", "LXXXIX",
             "XC", "XCI", "XCII", "XCIII", "XCIV", "XCV", "XCVI", "XCVII", "XCVIII", "XCIX", "C"};
-// первый операнд
+    // первый операнд
     private int firstOperand;
-//    второй операнд
+    //    второй операнд
     private int secondOperand;
-//    символ оператора
+    //    символ оператора
     private char operation;
-//    операнды в массиве
+    //    операнды в массиве
     private String[] arrayOfOperands = null;
-//    переменная boolean говорит операнды римские да или нет
+    //    переменная boolean говорит операнды римские да или нет
     private boolean operandsIsRoman;
 
 
@@ -44,168 +44,100 @@ class Calculator {
 // считали введенную строку м присволили ее значение expression
         Scanner scanner = new Scanner(System.in);
         String expression = scanner.nextLine();
+//        удалиляем все пробелы в строке
         expression = expression.replace(" ", "");
-
-
-        System.out.println(expression.matches("([A-Zaz0-9])+([+\\-*/])([A-Zaz0-9])+"));
+//        System.out.println(expression.matches("([IVX0-9])+([+\\-*/])([IVX0-9])+"));
 //        [+\-*/]
-
-        if (expression.contains("+") && !(expression.contains("-") || expression.contains("*") || expression.contains("/"))) {
-//            подсчитали количество символа "+"
-            int count = 0;
-            for (int i = 0; i < expression.length(); i++) {
-                if (Character.toString(expression.charAt(i)).equals("+")) {
-                    count++;
-                }
+//      проверка на правильность ввода с помощью регулярок и просвоение значения операнду
+        if (expression.matches("([IVX0-9])+([+\\-*/])([IVX0-9])+")) {
+            arrayOfOperands = expression.split("[+\\-*/]");
+            if (expression.matches("([IVX0-9])+([+])([IVX0-9])+")) {
+                operation = expression.charAt(expression.indexOf("+"));
+            } else if (expression.matches("([IVX0-9])+([-])([IVX0-9])+")) {
+                operation = expression.charAt(expression.indexOf("+"));
+            } else if (expression.matches("([IVX0-9])+([*])([IVX0-9])+")) {
+                operation = expression.charAt(expression.indexOf("*"));
+            } else if (expression.matches("([IVX0-9])+([/])([IVX0-9])+")) {
+                operation = expression.charAt(expression.indexOf("/"));
             }
-
-            //            и если количество символа "+" равно 1
-            if (count == 1) {
-                //        создали массив на основе введеного выражения разделив его по знаку операции
-                arrayOfOperands = expression.split("\\+");
-                //        узнали индекс в выражении знака операции
-                int indexOfOperation = expression.indexOf("+");
-                //        присвоили знак операции
-                operation = expression.charAt(indexOfOperation);
-            } else
-                throw new Exception(" формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-
-
-        } else if (expression.contains("-") && !(expression.contains("+") || expression.contains("*") || expression.contains("/"))) {
-            //            подсчитали количество символа "-"
-            int count = 0;
-            for (int i = 0; i < expression.length(); i++) {
-                if (Character.toString(expression.charAt(i)).equals("-")) {
-                    count++;
-                }
-            }
-//            и если количество символа "-" равно 1
-            if (count == 1) {
-                //        создали массив на основе введеного выражения разделив его по знаку операции
-                arrayOfOperands = expression.split("-");
-                //        узнали индекс в выражении знака операции
-                int indexOfOperation = expression.indexOf("-");
-                //        присвоили знак операции
-                operation = expression.charAt(indexOfOperation);
-            } else
-                throw new Exception(" формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-
-        } else if (expression.contains("*") && !(expression.contains("-") || expression.contains("+") || expression.contains("/"))) {
-            //            подсчитали количество символа "*"
-            int count = 0;
-            for (int i = 0; i < expression.length(); i++) {
-
-                if (Character.toString(expression.charAt(i)).equals("*")) {
-                    count++;
-                }
-            }
-//            и если количество символа "*" равно 1
-            if (count == 1) {
-                //        создали массив на основе введеного выражения разделив его по знаку операции
-                arrayOfOperands = expression.split("\\*");
-                //        узнали индекс в выражении знака операции
-                int indexOfOperation = expression.indexOf("*");
-                //        присвоили знак операции
-                operation = expression.charAt(indexOfOperation);
-            } else
-                throw new Exception(" формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-
-
-        } else if (expression.contains("/") && !(expression.contains("-") || expression.contains("+") || expression.contains("*"))) {
-            //            подсчитали количество символа "/"
-            int count = 0;
-            for (int i = 0; i < expression.length(); i++) {
-                if (Character.toString(expression.charAt(i)).equals("/")) {
-                    count++;
-                }
-            }
-//            и если количество символа "/" равно 1
-            if (count == 1) {
-                //        создали массив на основе введеного выражения разделив его по знаку операции
-                arrayOfOperands = expression.split("/");
-                //        узнали индекс в выражении знака операции
-                int indexOfOperation = expression.indexOf("/");
-                //        присвоили знак операции
-                operation = expression.charAt(indexOfOperation);
-            } else
-                throw new Exception(" формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-        }
+        }else throw new Exception("строка не является математической операцией");
     }
+
 // преобразовываем в операнды данные из строки
-    private void convertToOperands(String[] array) {
+            private void convertToOperands (String[]array){
 
-        boolean romanFirst = false;
-        boolean romanSecond = false;
-        String first = array[0];
-        String second = array[1];
-        for (int i = 0; i < roman.length; i++) {
-            if (first.equals(roman[i])) {
-                romanFirst = true;
-                firstOperand = i + 1;
+                boolean romanFirst = false;
+                boolean romanSecond = false;
+                String first = array[0];
+                String second = array[1];
+                for (int i = 0; i < roman.length; i++) {
+                    if (first.equals(roman[i])) {
+                        romanFirst = true;
+                        firstOperand = i + 1;
+                    }
+                    if (second.equals(roman[i])) {
+                        romanSecond = true;
+                        secondOperand = i + 1;
+                    }
+                }
+                if (romanFirst && romanSecond) {
+                    operandsIsRoman = true;
+                }
+                if (!romanFirst && !romanSecond) {
+                    try {
+                        firstOperand = Integer.parseInt(first);
+                        secondOperand = Integer.parseInt(second);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                } else if (!romanFirst || !romanSecond) {
+                    try {
+                        throw new Exception("используются одновременно разные системы счисления");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-            if (second.equals(roman[i])) {
-                romanSecond = true;
-                secondOperand = i + 1;
-            }
-        }
-        if (romanFirst && romanSecond) {
-            operandsIsRoman = true;
-        }
-        if (!romanFirst && !romanSecond) {
-            try {
-                firstOperand = Integer.parseInt(first);
-                secondOperand = Integer.parseInt(second);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-        } else if (!romanFirst || !romanSecond) {
-            try {
-                throw new Exception("Один из операндов не соответствует римским цифрам");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 
-    private void calculate(int firstOperand, int secondOperand, char operation) throws Exception {
+            private void calculate ( int firstOperand, int secondOperand, char operation) throws Exception {
 
-        int result = 0;
-        if (operandsIsRoman) {
-            switch (operation) {
-                case '+':
-                    result = firstOperand + secondOperand;
-                    break;
-                case '-':
-                    result = firstOperand - secondOperand;
-                    break;
-                case '*':
-                    result = firstOperand * secondOperand;
-                    break;
-                case '/':
-                    result = firstOperand / secondOperand;
-                    break;
+                int result = 0;
+                if (operandsIsRoman) {
+                    switch (operation) {
+                        case '+':
+                            result = firstOperand + secondOperand;
+                            break;
+                        case '-':
+                            result = firstOperand - secondOperand;
+                            break;
+                        case '*':
+                            result = firstOperand * secondOperand;
+                            break;
+                        case '/':
+                            result = firstOperand / secondOperand;
+                            break;
+                    }
+                    if (result > 0) {
+                        System.out.println(roman[result - 1]);
+                    } else {
+                        throw new Exception("в римской системе нет отрицательных чисел");
+                    }
+                } else {
+                    switch (operation) {
+                        case '+':
+                            result = firstOperand + secondOperand;
+                            break;
+                        case '-':
+                            result = firstOperand - secondOperand;
+                            break;
+                        case '*':
+                            result = firstOperand * secondOperand;
+                            break;
+                        case '/':
+                            result = firstOperand / secondOperand;
+                            break;
+                    }
+                    System.out.println(result);
+                }
             }
-            if (result > 0) {
-                System.out.println(roman[result - 1]);
-            } else {
-                throw new Exception("в римской системе нет отрицательных чисел");
-            }
-        } else {
-            switch (operation) {
-                case '+':
-                    result = firstOperand + secondOperand;
-                    break;
-                case '-':
-                    result = firstOperand - secondOperand;
-                    break;
-                case '*':
-                    result = firstOperand * secondOperand;
-                    break;
-                case '/':
-                    result = firstOperand / secondOperand;
-                    break;
-            }
-            System.out.println(result);
         }
-    }
-}
