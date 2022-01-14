@@ -46,7 +46,9 @@ class Calculator {
         String expression = scanner.nextLine();
         expression = expression.replace(" ", "");
 
-        expression.matches("[+\\-*/]");
+
+        System.out.println(expression.matches("([A-Zaz0-9])+([+\\-*/])([A-Zaz0-9])+"));
+//        [+\-*/]
 
         if (expression.contains("+") && !(expression.contains("-") || expression.contains("*") || expression.contains("/"))) {
 //            подсчитали количество символа "+"
