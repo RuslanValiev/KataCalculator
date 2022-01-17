@@ -54,7 +54,7 @@ class Calculator {
             if (expression.matches("([IVX0-9])+([+])([IVX0-9])+")) {
                 operation = expression.charAt(expression.indexOf("+"));
             } else if (expression.matches("([IVX0-9])+([-])([IVX0-9])+")) {
-                operation = expression.charAt(expression.indexOf("+"));
+                operation = expression.charAt(expression.indexOf("-"));
             } else if (expression.matches("([IVX0-9])+([*])([IVX0-9])+")) {
                 operation = expression.charAt(expression.indexOf("*"));
             } else if (expression.matches("([IVX0-9])+([/])([IVX0-9])+")) {
